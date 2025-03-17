@@ -1,0 +1,9 @@
+jupyter
+notebook
+tensorflow>=2.12.0
+torch>=2.0.0
+torchvision
+matplotlib
+numpy
+pandas
+scikit-learn 
