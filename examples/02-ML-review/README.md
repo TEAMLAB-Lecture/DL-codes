@@ -1,94 +1,44 @@
 # 머신러닝 기초 복습
 
-이 디렉토리에서는 머신러닝의 기본적인 개념들을 복습하고 구현해봅니다.
+이 디렉토리에는 머신러닝의 기본적인 모델들을 NumPy와 PyTorch로 구현한 예제들이 포함되어 있습니다.
 
-## 1. 선형 회귀 예제
+## 파일 목록
 
-### NumPy 버전 (`linear_regression_example.py`)
-- 캘리포니아 주택 가격 예측 문제
-- 데이터셋: sklearn의 California Housing Dataset
-- 특성:
-  - MedInc: 지역의 중간 소득
-  - HouseAge: 주택 연령
-  - AveRooms: 평균 방 개수
-  - AveBedrms: 평균 침실 개수
-  - Population: 인구
-  - AveOccup: 평균 점유율
-  - Latitude: 위도
-  - Longitude: 경도
-- 구현된 기능:
-  - 경사 하강법을 사용한 선형 회귀 모델 구현
-  - 데이터 전처리 (정규화)
-  - 모델 평가 (MSE, R² Score)
-  - 학습 과정 시각화
-  - 특성 중요도 분석
+### 선형 회귀 (Linear Regression)
 
-### PyTorch 버전 (`pytorch_linear_regression.py`)
-- NumPy 버전과 동일한 문제를 PyTorch로 구현
-- 추가 기능:
-  - 자동 미분 (AutoGrad) 활용
-  - nn.Sequential을 사용한 모델 구현
-  - GPU 지원 (가능한 경우)
-  - 배치 처리
+1. `01_linear_regression_numpy.py`: NumPy로 구현한 선형 회귀
+   - 캘리포니아 주택 가격 데이터셋 사용
+   - 경사 하강법으로 모델 학습
+   - 시각화: 학습 곡선, 특성 중요도, 예측값 vs 실제값
 
-## 2. 로지스틱 회귀 예제
+2. `02_linear_regression_pytorch.py`: PyTorch로 구현한 선형 회귀
+   - 캘리포니아 주택 가격 데이터셋 사용
+   - PyTorch의 자동 미분 기능 활용
+   - 시각화: 학습 곡선, 특성 중요도, 예측값 vs 실제값
 
-### NumPy 버전 (`numpy_logistic_regression.py`)
-- 당뇨병 예측 문제
-- 데이터셋: sklearn의 Diabetes Dataset
-- 특성:
-  - age: 나이
-  - sex: 성별
-  - bmi: 체질량 지수
-  - bp: 혈압
-  - s1-s6: 혈액 검사 결과
-- 구현된 기능:
-  - 경사 하강법을 사용한 로지스틱 회귀 모델 구현
-  - 특성 엔지니어링 (BMI와 혈압의 상호작용, BMI 제곱)
-  - 데이터 전처리 (정규화)
-  - 교차 검증
-  - 모델 평가 (정확도, 정밀도, 재현율, F1, ROC-AUC)
-  - 다양한 시각화:
-    - 학습 곡선
-    - 혼동 행렬
-    - ROC 커브
-    - 특성 중요도
-    - 결정 경계 (PCA 사용)
-    - 수학적 개념 시각화 (시그모이드, 로그 오즈, BCE 손실)
-  - 모델 해석:
-    - 특성 중요도 분석
-    - 로그 오즈비 해석
-    - 다양한 임계값에 따른 성능 평가
+### 로지스틱 회귀 (Logistic Regression)
 
-### PyTorch 버전 (`pytorch_logistic_regression.py`)
-- NumPy 버전과 동일한 문제를 PyTorch로 구현
-- 추가 기능:
-  - 자동 미분 (AutoGrad) 활용
-  - nn.Sequential을 사용한 모델 구현
-  - GPU 지원 (가능한 경우)
-  - 배치 처리
-  - DataLoader를 사용한 데이터 관리
+3. `03_logistic_regression_numpy.py`: NumPy로 구현한 로지스틱 회귀
+   - 유방암 데이터셋 사용
+   - 이진 분류 문제 해결
+   - 시각화: 학습 곡선, ROC 곡선, 혼동 행렬, 특성 가중치
+
+4. `04_logistic_regression_pytorch.py`: PyTorch로 구현한 로지스틱 회귀
+   - 유방암 데이터셋 사용
+   - PyTorch의 신경망 모듈 활용
+   - 시각화: 학습 곡선, ROC 곡선, 혼동 행렬, 특성 가중치
 
 ## 실행 방법
 
-1. 필요한 패키지 설치:
+각 파일은 독립적으로 실행할 수 있습니다:
 ```bash
-pip install -r requirements.txt
-```
+# 선형 회귀
+python 01_linear_regression_numpy.py
+python 02_linear_regression_pytorch.py
 
-2. 예제 실행:
-```bash
-# NumPy 버전 선형 회귀
-python linear_regression_example.py
-
-# PyTorch 버전 선형 회귀
-python pytorch_linear_regression.py
-
-# NumPy 버전 로지스틱 회귀
-python numpy_logistic_regression.py
-
-# PyTorch 버전 로지스틱 회귀
-python pytorch_logistic_regression.py
+# 로지스틱 회귀
+python 03_logistic_regression_numpy.py
+python 04_logistic_regression_pytorch.py
 ```
 
 ## 출력 파일
@@ -96,14 +46,19 @@ python pytorch_logistic_regression.py
 각 예제는 다음과 같은 시각화 파일들을 생성합니다:
 
 ### 선형 회귀
-- `linear_regression_learning_curves.png`: 학습 과정의 손실과 정확도 변화
-- `linear_regression_predictions.png`: 실제값과 예측값 비교
-- `linear_regression_feature_importance.png`: 특성 중요도 분석
+- `01_linear_regression_numpy_cost_history.png`
+- `01_linear_regression_numpy_feature_importance.png`
+- `01_linear_regression_numpy_prediction_vs_actual.png`
+- `02_linear_regression_pytorch_cost_history.png`
+- `02_linear_regression_pytorch_feature_importance.png`
+- `02_linear_regression_pytorch_prediction_vs_actual.png`
 
 ### 로지스틱 회귀
-- `logistic_regression_learning_curves.png`: 학습 과정의 손실과 정확도 변화
-- `logistic_regression_confusion_matrix.png`: 혼동 행렬
-- `logistic_regression_roc_curve.png`: ROC 커브
-- `logistic_regression_weights.png`: 학습된 가중치 시각화
-- `logistic_regression_decision_boundary.png`: PCA를 사용한 결정 경계
-- `logistic_regression_concept_visualization.png`: 로지스틱 회귀의 수학적 개념 시각화 
+- `03_logistic_regression_numpy_loss_history.png`
+- `03_logistic_regression_numpy_roc_curve.png`
+- `03_logistic_regression_numpy_confusion_matrix.png`
+- `03_logistic_regression_numpy_feature_weights.png`
+- `04_logistic_regression_pytorch_loss_history.png`
+- `04_logistic_regression_pytorch_roc_curve.png`
+- `04_logistic_regression_pytorch_confusion_matrix.png`
+- `04_logistic_regression_pytorch_feature_weights.png` 

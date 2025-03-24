@@ -1,104 +1,82 @@
-# Deep Learning Tutorials with Docker
+# Deep Learning Class Codes
 
-[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
-[![Docker](https://img.shields.io/badge/docker-%230db7ed.svg?style=flat&logo=docker&logoColor=white)](https://www.docker.com/)
-[![TensorFlow](https://img.shields.io/badge/TensorFlow-%23FF6F00.svg?style=flat&logo=TensorFlow&logoColor=white)](https://www.tensorflow.org/)
-[![PyTorch](https://img.shields.io/badge/PyTorch-%23EE4C2C.svg?style=flat&logo=PyTorch&logoColor=white)](https://pytorch.org/)
+이 저장소는 딥러닝 수업에서 사용되는 코드 예제들을 포함하고 있습니다.
 
-This repository provides a Docker-based development environment for deep learning tutorials. It includes ready-to-run examples for neural networks using both TensorFlow and PyTorch.
+## 디렉토리 구조
 
-## 🚀 Features
-
-- 📦 Pre-configured Docker environment
-- 🔧 GPU support (NVIDIA CUDA)
-- 📓 Interactive Jupyter notebooks
-- 🎓 Step-by-step tutorials
-- 🔄 Both TensorFlow and PyTorch examples
-
-## 📋 Prerequisites
-
-- [Docker Desktop](https://www.docker.com/products/docker-desktop/)
-- [NVIDIA GPU driver](https://www.nvidia.com/download/index.aspx) (for GPU support)
-- [Git](https://git-scm.com/downloads)
-
-## 🏃‍♂️ Quick Start
-
-### Windows Users
-
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/username/deep-learning-tutorials.git
-   cd deep-learning-tutorials
-   ```
-
-2. Double-click `start.bat` to run
-3. Access http://localhost:8888 in your browser
-
-### Linux/Mac Users
-
-```bash
-# Clone repository
-git clone https://github.com/username/deep-learning-tutorials.git
-cd deep-learning-tutorials
-
-# Build and run Docker container
-docker-compose up -d
-
-# Access http://localhost:8888 in your browser
+```
+.
+├── examples/
+│   ├── 01-intro-to-neural-networks/ # 신경망 입문
+│   │   ├── README.md              # 디렉토리 설명
+│   │   └── pytroch_example_codes.ipynb  # PyTorch 기초 예제
+│   │
+│   └── 02-ML-review/              # 머신러닝 기초 복습
+│       ├── README.md              # 디렉토리 설명
+│       ├── 01_linear_regression_numpy.py    # NumPy로 구현한 선형 회귀
+│       ├── 02_linear_regression_pytorch.py  # PyTorch로 구현한 선형 회귀
+│       ├── 03_logistic_regression_numpy.py  # NumPy로 구현한 로지스틱 회귀
+│       └── 04_logistic_regression_pytorch.py # PyTorch로 구현한 로지스틱 회귀
+│
+└── README.md                      # 이 파일
 ```
 
-## 📚 Tutorials
+## 예제 실행 방법
 
-1. **Introduction to Neural Networks**
-   - Basic neural network structure
-   - Activation functions
-   - Loss functions
-   - Gradient descent
-   - Simple classification example
+### 1. 신경망 입문 (examples/01-intro-to-neural-networks/)
 
-2. **Convolutional Neural Networks (CNN)**
-   - Image classification
-   - Feature extraction
-   - Transfer learning
-
-3. **Recurrent Neural Networks (RNN)**
-   - Sequential data processing
-   - Time series analysis
-   - Natural language processing
-
-## 🛠️ Technical Details
-
-### Docker Configuration
-
-- Base image: `nvidia/cuda:11.8.0-cudnn8-runtime-ubuntu22.04`
-- Python packages:
-  - TensorFlow 2.12+
-  - PyTorch 2.0+
-  - Jupyter
-  - NumPy
-  - Pandas
-  - Matplotlib
-
-### GPU Support
-
-To verify GPU support:
+Jupyter 노트북을 실행하려면:
 ```bash
-nvidia-smi
+jupyter notebook examples/01-intro-to-neural-networks/pytroch_example_codes.ipynb
 ```
 
-## 🤝 Contributing
+### 2. 머신러닝 기초 복습 (examples/02-ML-review/)
 
-Contributions are welcome! Please feel free to submit a Pull Request.
+#### 선형 회귀
+- NumPy 버전:
+```bash
+python examples/03-ML-review/01_linear_regression_numpy.py
+```
+- PyTorch 버전:
+```bash
+python examples/03-ML-review/02_linear_regression_pytorch.py
+```
 
-## 📝 License
+#### 로지스틱 회귀
+- NumPy 버전:
+```bash
+python examples/03-ML-review/03_logistic_regression_numpy.py
+```
+- PyTorch 버전:
+```bash
+python examples/03-ML-review/04_logistic_regression_pytorch.py
+```
 
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
+## 필요한 패키지
 
-## 📮 Contact
+이 프로젝트를 실행하기 위해 필요한 주요 패키지들입니다:
 
-- GitHub Issues: [Create an issue](https://github.com/username/deep-learning-tutorials/issues)
-- Email: your.email@example.com
+```bash
+pip install numpy
+pip install pandas
+pip install matplotlib
+pip install scikit-learn
+pip install torch
+pip install seaborn
+pip install jupyter
+```
 
-## ⭐ Star History
+## 주의사항
 
-[![Star History Chart](https://api.star-history.com/svg?repos=username/deep-learning-tutorials&type=Date)](https://star-history.com/#username/deep-learning-tutorials&Date) 
+1. 한글 폰트 설정
+   - matplotlib에서 한글을 표시하기 위해 나눔고딕 폰트가 필요합니다.
+   - Windows의 경우: `C:\Windows\Fonts\NanumGothic.ttf`
+   - Linux의 경우: `/usr/share/fonts/truetype/nanum/NanumGothic.ttf`
+
+2. CUDA 지원
+   - PyTorch 예제들은 CUDA가 설치된 경우 자동으로 GPU를 사용합니다.
+   - GPU 사용이 필요한 경우 CUDA와 cuDNN이 설치되어 있어야 합니다.
+
+## 라이선스
+
+이 프로젝트는 MIT 라이선스를 따릅니다. 
