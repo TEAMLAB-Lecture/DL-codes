@@ -79,4 +79,77 @@ pip install jupyter
 
 ## 라이선스
 
-이 프로젝트는 MIT 라이선스를 따릅니다. 
+이 프로젝트는 MIT 라이선스를 따릅니다.
+
+# Deep Learning Course Environment
+
+이 프로젝트는 딥러닝 강좌를 위한 Docker 기반 개발 환경을 제공합니다.
+
+## 사전 요구사항
+
+- Docker Desktop
+- NVIDIA GPU (선택사항, GPU 가속을 위해 필요)
+
+## 설치 방법
+
+### Windows 사용자
+
+1. Docker Desktop 설치
+   - [Docker Desktop for Windows](https://www.docker.com/products/docker-desktop) 다운로드 및 설치
+   - 설치 후 Docker Desktop 실행
+
+2. NVIDIA GPU 사용자 (선택사항)
+   - [NVIDIA Driver](https://www.nvidia.com/download/index.aspx) 설치
+   - [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) 설치
+
+### Mac/Linux 사용자
+
+1. Docker 설치
+   - Mac: [Docker Desktop for Mac](https://www.docker.com/products/docker-desktop) 설치
+   - Linux: 
+     ```bash
+     curl -fsSL https://get.docker.com -o get-docker.sh
+     sudo sh get-docker.sh
+     ```
+
+2. NVIDIA GPU 사용자 (Linux만 해당)
+   - [NVIDIA Driver](https://www.nvidia.com/download/index.aspx) 설치
+   - [NVIDIA Container Toolkit](https://docs.nvidia.com/datacenter/cloud-native/container-toolkit/install-guide.html#docker) 설치
+
+## 실행 방법
+
+### Windows 사용자
+
+1. `start.bat` 파일을 더블클릭하거나 명령 프롬프트에서 실행:
+   ```cmd
+   start.bat
+   ```
+
+### Mac/Linux 사용자
+
+1. 스크립트에 실행 권한 부여:
+   ```bash
+   chmod +x start.sh
+   ```
+
+2. 스크립트 실행:
+   ```bash
+   ./start.sh
+   ```
+
+## 접속 방법
+
+- Jupyter Notebook이 시작되면 웹 브라우저에서 http://localhost:8888 접속
+- 토큰은 터미널에 표시됩니다
+
+## 주의사항
+
+- Docker Desktop이 실행 중이어야 합니다
+- GPU 사용 시 NVIDIA 드라이버가 올바르게 설치되어 있어야 합니다
+- 컨테이너 종료는 `Ctrl+C`를 누르거나 터미널 창을 닫으면 됩니다
+
+## 문제 해결
+
+- Docker가 실행되지 않은 경우: Docker Desktop을 실행한 후 다시 시도하세요
+- GPU 관련 문제: NVIDIA 드라이버와 Container Toolkit이 올바르게 설치되어 있는지 확인하세요
+- 포트 충돌: 8888 포트가 사용 중인 경우 다른 포트를 사용하도록 설정을 변경할 수 있습니다 
