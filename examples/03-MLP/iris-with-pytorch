@@ -1,0 +1,217 @@
+# -*- coding: utf-8 -*-
+
+# Import necessary libraries
+import torch
+import torch.nn as nn
+import torch.optim as optim
+from torch.utils.data import DataLoader, TensorDataset
+
+from sklearn import datasets
+from sklearn.model_selection import train_test_split
+from sklearn.metrics import confusion_matrix, classification_report, accuracy_score
+import numpy as np
+import matplotlib.pyplot as plt
+import itertools
+
+# --- Configuration ---
+# Hyperparameters
+LEARNING_RATE = 0.01
+BATCH_SIZE = 64
+EPOCHS = 50 # You might need more epochs for better convergence
+
+# Device Configuration (GPU if available, else CPU)
+device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')
+print(f"Using device: {device}")
+
+# Set random seed for reproducibility
+SEED = 42
+np.random.seed(SEED)
+torch.manual_seed(SEED)
+if torch.cuda.is_available():
+    torch.cuda.manual_seed_all(SEED)
+
+# --- Data Loading and Preparation ---
+
+# Load the digits dataset
+print("Loading digits dataset...")
+digit_dataset = datasets.load_digits()
+print("Dataset loaded.")
+
+# Assign features (X) and target (y)
+X = digit_dataset.data
+y = digit_dataset.target
+
+# Normalize the features (pixel values 0-16 -> 0-1)
+X = X / 16.0
+
+# Split data into training and testing sets
+print("Splitting data into train/test sets...")
+X_train_np, X_test_np, y_train_np, y_test_np = train_test_split(
+    X, y, test_size=0.25, random_state=SEED, stratify=y # Stratify for balanced classes
+)
+print(f"Data split: X_train: {X_train_np.shape}, X_test: {X_test_np.shape}, y_train: {y_train_np.shape}, y_test: {y_test_np.shape}")
+
+# Convert NumPy arrays to PyTorch tensors
+X_train = torch.tensor(X_train_np, dtype=torch.float32)
+y_train = torch.tensor(y_train_np, dtype=torch.long) # CrossEntropyLoss expects Long type for labels
+X_test = torch.tensor(X_test_np, dtype=torch.float32)
+y_test = torch.tensor(y_test_np, dtype=torch.long)
+
+# Create TensorDatasets and DataLoaders
+train_dataset = TensorDataset(X_train, y_train)
+test_dataset = TensorDataset(X_test, y_test)
+
+train_loader = DataLoader(dataset=train_dataset, batch_size=BATCH_SIZE, shuffle=True)
+test_loader = DataLoader(dataset=test_dataset, batch_size=BATCH_SIZE, shuffle=False)
+
+# --- Model Definition ---
+
+# Logistic Regression is equivalent to a single linear layer in a neural network
+# Input features = 64 (8x8 image flattened)
+# Output features = 10 (number of classes, digits 0-9)
+class PyTorchLogisticRegression(nn.Module):
+    def __init__(self, input_dim, output_dim):
+        super(PyTorchLogisticRegression, self).__init__()
+        self.linear = nn.Linear(input_dim, output_dim)
+
+    def forward(self, x):
+        # No activation function here, as CrossEntropyLoss applies LogSoftmax internally
+        outputs = self.linear(x)
+        return outputs
+
+input_dim = X_train.shape[1] # Should be 64
+output_dim = len(digit_dataset.target_names) # Should be 10
+
+model = PyTorchLogisticRegression(input_dim, output_dim).to(device)
+print("\nModel Architecture:")
+print(model)
+
+# --- Loss Function and Optimizer ---
+
+# CrossEntropyLoss combines LogSoftmax and NLLLoss - suitable for multi-class classification
+criterion = nn.CrossEntropyLoss()
+
+# Optimizer (Adam is a popular choice)
+optimizer = optim.Adam(model.parameters(), lr=LEARNING_RATE)
+# You could also use SGD:
+# optimizer = optim.SGD(model.parameters(), lr=LEARNING_RATE, momentum=0.9)
+
+# --- Training Loop ---
+
+print(f"\nStarting Training for {EPOCHS} epochs...")
+for epoch in range(EPOCHS):
+    model.train() # Set model to training mode
+    running_loss = 0.0
+    for i, (features, labels) in enumerate(train_loader):
+        # Move tensors to the configured device
+        features = features.to(device)
+        labels = labels.to(device)
+
+        # Forward pass
+        outputs = model(features)
+        loss = criterion(outputs, labels)
+
+        # Backward pass and optimize
+        optimizer.zero_grad() # Clear previous gradients
+        loss.backward()       # Compute gradients
+        optimizer.step()        # Update weights
+
+        running_loss += loss.item()
+
+    # Print average loss for the epoch
+    epoch_loss = running_loss / len(train_loader)
+    print(f"Epoch [{epoch+1}/{EPOCHS}], Loss: {epoch_loss:.4f}")
+
+print("Training finished.")
+
+# --- Evaluation ---
+
+print("\nEvaluating model on the test set...")
+model.eval() # Set model to evaluation mode
+all_preds = []
+all_labels = []
+
+# Disable gradient calculations during evaluation
+with torch.no_grad():
+    correct = 0
+    total = 0
+    for features, labels in test_loader:
+        features = features.to(device)
+        labels = labels.to(device)
+
+        outputs = model(features)
+
+        # Get predictions from the maximum value output (logits)
+        # The output is (batch_size, num_classes)
+        _, predicted = torch.max(outputs.data, 1)
+
+        total += labels.size(0)
+        correct += (predicted == labels).sum().item()
+
+        # Store predictions and labels for detailed metrics
+        all_preds.extend(predicted.cpu().numpy())
+        all_labels.extend(labels.cpu().numpy())
+
+accuracy = 100 * correct / total
+print(f"\nTest Accuracy: {accuracy:.2f}%")
+
+# --- Detailed Metrics (Confusion Matrix, Classification Report) ---
+
+print("\n--- Detailed Test Set Metrics ---")
+print("\nConfusion Matrix:")
+cm = confusion_matrix(all_labels, all_preds)
+print(cm)
+
+print("\nClassification Report:")
+print(classification_report(all_labels, all_preds, target_names=[str(i) for i in digit_dataset.target_names]))
+
+
+# --- Confusion Matrix Plotting ---
+
+# Re-use the plotting function from the previous example
+def plot_confusion_matrix(cm, classes,
+                          normalize=False,
+                          title='Confusion matrix',
+                          cmap=plt.cm.Blues):
+    if normalize:
+        cm = cm.astype('float') / cm.sum(axis=1)[:, np.newaxis]
+        print("Normalized confusion matrix")
+    else:
+        print('Confusion matrix, without normalization')
+
+    plt.imshow(cm, interpolation='nearest', cmap=cmap)
+    plt.title(title)
+    plt.colorbar()
+    tick_marks = np.arange(len(classes))
+    plt.xticks(tick_marks, classes, rotation=45)
+    plt.yticks(tick_marks, classes)
+
+    fmt = '.2f' if normalize else 'd'
+    thresh = cm.max() / 2.
+    for i, j in itertools.product(range(cm.shape[0]), range(cm.shape[1])):
+        plt.text(j, i, format(cm[i, j], fmt),
+                 horizontalalignment="center",
+                 color="white" if cm[i, j] > thresh else "black")
+
+    plt.tight_layout()
+    plt.ylabel('True label')
+    plt.xlabel('Predicted label')
+
+
+print("\nPlotting Confusion Matrix...")
+class_names = [str(i) for i in digit_dataset.target_names]
+
+# Plot non-normalized confusion matrix
+plt.figure(figsize=(8, 6))
+plot_confusion_matrix(cm, classes=class_names,
+                      title='PyTorch Confusion Matrix (Digits), without normalization')
+
+# Plot normalized confusion matrix
+plt.figure(figsize=(8, 6))
+plot_confusion_matrix(cm, classes=class_names, normalize=True,
+                      title='PyTorch Normalized Confusion Matrix (Digits)')
+
+print("\nShowing plots...")
+plt.show()
+
+print("\nScript finished.")
