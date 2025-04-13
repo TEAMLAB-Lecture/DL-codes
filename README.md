@@ -11,12 +11,21 @@
 │   │   ├── README.md              # 디렉토리 설명
 │   │   └── pytroch_example_codes.ipynb  # PyTorch 기초 예제
 │   │
-│   └── 02-ML-review/              # 머신러닝 기초 복습
+│   ├── 02-ML-review/              # 머신러닝 기초 복습
+│   │   ├── README.md              # 디렉토리 설명
+│   │   ├── 01_linear_regression_numpy.py    # NumPy로 구현한 선형 회귀
+│   │   ├── 02_linear_regression_pytorch.py  # PyTorch로 구현한 선형 회귀
+│   │   ├── 03_logistic_regression_numpy.py  # NumPy로 구현한 로지스틱 회귀
+│   │   └── 04_logistic_regression_pytorch.py # PyTorch로 구현한 로지스틱 회귀
+│   │
+│   └── 03-MLP/                    # 다층 퍼셉트론
 │       ├── README.md              # 디렉토리 설명
-│       ├── 01_linear_regression_numpy.py    # NumPy로 구현한 선형 회귀
-│       ├── 02_linear_regression_pytorch.py  # PyTorch로 구현한 선형 회귀
-│       ├── 03_logistic_regression_numpy.py  # NumPy로 구현한 로지스틱 회귀
-│       └── 04_logistic_regression_pytorch.py # PyTorch로 구현한 로지스틱 회귀
+│       ├── fashion_mnist_mlp.py   # Fashion MNIST MLP 구현
+│       ├── fashion_mnist_mlp.ipynb # Fashion MNIST MLP Jupyter Notebook
+│       ├── iris-with-softmax.py   # IRIS 데이터셋 Softmax 구현
+│       ├── iris-with-softmax.ipynb # IRIS 데이터셋 Softmax Jupyter Notebook
+│       ├── iris-with-pytorch.py   # IRIS 데이터셋 PyTorch 구현
+│       └── iris-with-pytorch.ipynb # IRIS 데이터셋 PyTorch Jupyter Notebook
 │
 └── README.md                      # 이 파일
 ```
@@ -35,21 +44,38 @@ jupyter notebook examples/01-intro-to-neural-networks/pytroch_example_codes.ipyn
 #### 선형 회귀
 - NumPy 버전:
 ```bash
-python examples/03-ML-review/01_linear_regression_numpy.py
+python examples/02-ML-review/01_linear_regression_numpy.py
 ```
 - PyTorch 버전:
 ```bash
-python examples/03-ML-review/02_linear_regression_pytorch.py
+python examples/02-ML-review/02_linear_regression_pytorch.py
 ```
 
 #### 로지스틱 회귀
 - NumPy 버전:
 ```bash
-python examples/03-ML-review/03_logistic_regression_numpy.py
+python examples/02-ML-review/03_logistic_regression_numpy.py
 ```
 - PyTorch 버전:
 ```bash
-python examples/03-ML-review/04_logistic_regression_pytorch.py
+python examples/02-ML-review/04_logistic_regression_pytorch.py
+```
+
+### 3. 다층 퍼셉트론 (examples/03-MLP/)
+
+#### Fashion MNIST MLP
+```bash
+python examples/03-MLP/fashion_mnist_mlp.py
+```
+
+#### IRIS 데이터셋 MLP
+- Softmax 버전:
+```bash
+python examples/03-MLP/iris-with-softmax.py
+```
+- PyTorch 버전:
+```bash
+python examples/03-MLP/iris-with-pytorch.py
 ```
 
 ## 필요한 패키지
@@ -62,6 +88,7 @@ pip install pandas
 pip install matplotlib
 pip install scikit-learn
 pip install torch
+pip install torchvision
 pip install seaborn
 pip install jupyter
 ```
