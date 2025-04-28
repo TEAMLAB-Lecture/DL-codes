@@ -179,4 +179,64 @@ pip install jupyter
 
 - Docker가 실행되지 않은 경우: Docker Desktop을 실행한 후 다시 시도하세요
 - GPU 관련 문제: NVIDIA 드라이버와 Container Toolkit이 올바르게 설치되어 있는지 확인하세요
-- 포트 충돌: 8888 포트가 사용 중인 경우 다른 포트를 사용하도록 설정을 변경할 수 있습니다 
+- 포트 충돌: 8888 포트가 사용 중인 경우 다른 포트를 사용하도록 설정을 변경할 수 있습니다
+
+## Docker 환경 설정 및 연결 방법
+
+### 1. Docker 설치 확인
+```bash
+# Docker 설치 확인
+docker --version
+
+# Docker 실행 상태 확인
+docker info
+```
+
+### 2. Docker 이미지 빌드 및 실행
+```bash
+# 프로젝트 디렉토리로 이동
+cd /path/to/your/project
+
+# Docker 이미지 빌드
+docker-compose build
+
+# Docker 컨테이너 실행
+docker-compose up
+```
+
+### 3. Jupyter Notebook 접속
+- 웹 브라우저에서 http://localhost:8888 접속
+- 토큰은 터미널에 표시됩니다
+- 토큰이 보이지 않는 경우 다음 명령어로 확인:
+```bash
+docker logs $(docker ps -q --filter name=jupyter)
+```
+
+### 4. Docker 컨테이너 관리
+```bash
+# 실행 중인 컨테이너 확인
+docker ps
+
+# 컨테이너 중지
+docker-compose down
+
+# 컨테이너 재시작
+docker-compose restart
+
+# 로그 확인
+docker-compose logs
+```
+
+### 5. GPU 사용 확인
+```bash
+# NVIDIA GPU 확인
+nvidia-smi
+
+# Docker 컨테이너에서 GPU 사용 확인
+docker exec -it $(docker ps -q --filter name=jupyter) nvidia-smi
+```
+
+### 6. 문제 해결
+- 포트 충돌 시: `docker-compose.yml` 파일에서 포트 번호 변경
+- 메모리 부족 시: Docker Desktop 설정에서 리소스 할당량 조정
+- GPU 인식 문제: NVIDIA 드라이버와 Container Toolkit 재설치 
